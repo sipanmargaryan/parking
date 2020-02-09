@@ -1,0 +1,5 @@
+django==3.0
+
+# dev packages
+flake8==3.5.0
+ipython==7.0.1
