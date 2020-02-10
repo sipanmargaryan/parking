@@ -1,12 +1,17 @@
-version: "2"
+version: "3"
 
 services:
-  project_img:
+  project:
+    container_name: project
+    image: parking
     build: .
-    image: parking
-
-  project_app:
-    image: parking
+    depends_on:
+      - db
+      - redis
+      - celery
+    command: ./wait-for-it.sh db:5432 -- python3 manage.py runserver 0:8000
+    ports:
+      - "8000:8000"
     volumes:
       - .:/project
     env_file:
@@ -17,18 +22,19 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-  project:
-    extends: project_app
+  redis:
+    image: redis:3.2
+    volumes:
+      - redis:/data
+
+  celery:
+    image: parking
     depends_on:
       - db
-    command: ./wait-for-it.sh db:5432 -- python3 manage.py runserver 0:8000
-    ports:
-      - "8000:8000"
-
-  packages:
-    extends: project_app
-    volumes:
-      - .:/host
+      - redis
+    command: ./wait-for-it.sh db:5432 -- celery -A project worker -l info
+    environment:
+      C_FORCE_ROOT: "1"
 
 volumes:
   db:
