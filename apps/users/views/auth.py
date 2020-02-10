@@ -26,8 +26,8 @@ class SignupAPIView(GenericAPIView, SaveSerializerMixin):
     serializer_class = SignupSerializer
 
 
-# class ConfirmEmailAPIView(GenericAPIView, SaveSerializerMixin):
-#     serializer_class = ConfirmEmailSerializer
+class ConfirmEmailAPIView(GenericAPIView, SaveSerializerMixin):
+    serializer_class = ConfirmPhoneNumberSerializer
 #
 #
 # class ForgotPasswordAPIView(GenericAPIView, SaveSerializerMixin):

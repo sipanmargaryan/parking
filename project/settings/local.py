@@ -36,6 +36,7 @@ EXTERNAL_APPS = [
 PROJECT_APPS = [
     'core',
     'users',
+    'messaging',
 ]
 
 INSTALLED_APPS.extend(EXTERNAL_APPS + PROJECT_APPS)
@@ -185,3 +186,5 @@ CLIENT_DOMAIN = ENV.str('CLIENT_DOMAIN', '127.0.0.1:8000')
 URL_SCHEME = ENV.str('URL_SCHEME', 'http')
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+DEFAULT_COUNTRY = ENV.str('DEFAULT_COUNTRY', 'Armenia')

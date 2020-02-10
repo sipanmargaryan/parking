@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+import core.models
+
+admin.site.register(core.models.Country)
+admin.site.register(core.models.Brand)
+admin.site.register(core.models.CarModel)
+admin.site.register(core.models.Color)

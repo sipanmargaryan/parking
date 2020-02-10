@@ -1,14 +1,17 @@
 from rest_framework import serializers
+
+from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 
-
+from core.models import Country
 from users.models import User
 
 
 __all__ = (
     'LoginSerializer',
     'SignupSerializer',
+    'ConfirmPhoneNumberSerializer',
 )
 
 
@@ -79,6 +82,7 @@ class SignupSerializer(serializers.ModelSerializer):
             first_name=first_name,
             last_name=last_name,
             email=validated_data['email'],
+            country=Country.objects.get(name=settings.DEFAULT_COUNTRY),
             phone_number=validated_data['phone_number'],
             is_active=False,
         )
@@ -88,3 +92,27 @@ class SignupSerializer(serializers.ModelSerializer):
         # users.utils.emails.send_email_address_confirmation(user)
 
         return {'msg': _('Please confirm your phone number.')}
+
+
+# noinspection PyAbstractClass
+class ConfirmPhoneNumberSerializer(serializers.Serializer, AuthPayload):
+    token = serializers.CharField()
+
+    def validate_token(self, value):
+        # noinspection PyAttributeOutsideInit
+        self.user = User.objects.filter(phone_confirmation_token=value).first()
+        if not self.user:
+            raise serializers.ValidationError(_('Invalid token.'))
+        return value
+
+    def create(self, validated_data):
+        self.user.is_active = True
+        self.user.phone_confirmation_token = None
+        self.user.save()
+
+        return self.get_auth_payload(
+            user=self.user,
+            additional_data={
+                'msg': _('You have successfully confirmed you phone number.')
+            },
+        )
