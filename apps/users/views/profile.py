@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, parsers, viewsets
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from django.http import Http404
 
 import users.models
 from ..serializers import *  # noqa
@@ -10,6 +11,7 @@ __all__ = (
     'ChangePasswordAPIView',
     'ChangeAvatarViewSet',
     'AddCarAPIView',
+    'EditCarAPIView',
 )
 
 
@@ -49,8 +51,14 @@ class ChangeAvatarViewSet(viewsets.ModelViewSet):
 
 class AddCarAPIView(generics.CreateAPIView):
     queryset = users.models.Car.objects.all()
-    serializer_class = AddCarSerializer
+    serializer_class = AddEditCarSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class EditCarAPIView(generics.UpdateAPIView):
+    queryset = users.models.Car.objects.all()
+    serializer_class = AddEditCarSerializer
+    permission_classes = (permissions.IsAuthenticated, )

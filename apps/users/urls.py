@@ -22,6 +22,7 @@ profile_patterns = [
             name='change_avatar'
         ),
     path('add-car/', profile.AddCarAPIView.as_view(), name='add_car'),
+    path('edit_car/<int:pk>/', profile.EditCarAPIView.as_view(), name='edit_car'),
 ]
 
 app_name = 'users'

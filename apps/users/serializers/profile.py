@@ -8,7 +8,7 @@ import users.models
 __all__ = (
     'ChangePasswordSerializer',
     'ChangeAvatarSerializer',
-    'AddCarSerializer',
+    'AddEditCarSerializer',
 )
 
 
@@ -47,7 +47,8 @@ class ChangeAvatarSerializer(serializers.ModelSerializer):
         fields = ('avatar',)
 
 
-class AddCarSerializer(serializers.ModelSerializer):
+class AddEditCarSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.Car
         fields = ('car_number', 'car_model', 'color', )
+
