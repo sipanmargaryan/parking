@@ -7,9 +7,9 @@ from ..serializers import *  # noqa
 __all__ = (
     'LogInAPIView',
     'SignupAPIView',
-    # 'ConfirmEmailAPIView',
-    # 'ForgotPasswordAPIView',
-    # 'ResetPasswordAPIView',
+    'ConfirmPhoneNumberAPIView',
+    'ForgotPasswordAPIView',
+    'ResetPasswordAPIView',
 )
 
 
@@ -26,13 +26,13 @@ class SignupAPIView(GenericAPIView, SaveSerializerMixin):
     serializer_class = SignupSerializer
 
 
-class ConfirmEmailAPIView(GenericAPIView, SaveSerializerMixin):
+class ConfirmPhoneNumberAPIView(GenericAPIView, SaveSerializerMixin):
     serializer_class = ConfirmPhoneNumberSerializer
-#
-#
-# class ForgotPasswordAPIView(GenericAPIView, SaveSerializerMixin):
-#     serializer_class = ForgotPasswordSerializer
-#
-#
-# class ResetPasswordAPIView(GenericAPIView, SaveSerializerMixin):
-#     serializer_class = ResetPasswordSerializer
+
+
+class ForgotPasswordAPIView(GenericAPIView, SaveSerializerMixin):
+    serializer_class = ForgotPasswordSerializer
+
+
+class ResetPasswordAPIView(GenericAPIView, SaveSerializerMixin):
+    serializer_class = ResetPasswordSerializer

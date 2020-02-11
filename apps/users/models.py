@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from core.models import Country, Brand, Color
-from core.utils import get_file_path, get_image_from_url
+from core.utils import get_file_path
 
 __all__ = (
     'User',
@@ -47,8 +47,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=16, unique=True, null=True)
+    email = models.EmailField(unique=True, blank=True, null=True, default=None)
+    phone_number = models.CharField(max_length=16, unique=True)
     avatar = models.ImageField(upload_to=get_file_path, blank=True)
     device_id = models.CharField(max_length=200, editable=False, null=True)
     phone_number_confirmation_token = models.CharField(max_length=64, editable=False, null=True)
@@ -70,26 +70,6 @@ class User(AbstractUser):
     def get_avatar(self) -> str:
         if self.avatar:
             return self.avatar.url
-
-    def set_avatar(self, avatar_url: str):
-        """
-        Download image based on url an attach to user if valid.
-        :param avatar_url:
-        :return:
-        """
-        if not avatar_url:
-            return
-
-        file = get_image_from_url(avatar_url)
-        if not file:
-            return
-
-        filename = avatar_url.split('/')[-1]
-        if not any(filter(lambda ext: ext in filename, ['.jpeg', '.jpg', '.png'])):
-            filename = 'avatar.jpeg'
-
-        filename = get_file_path(self, filename)
-        self.avatar.save(filename, file, save=True)
 
     @staticmethod
     def generate_token() -> str:
@@ -113,6 +93,6 @@ class Notification(models.Model):
 class Car(models.Model):
     car_number = models.CharField(max_length=60, unique=True)
 
-    model = models.ForeignKey(Brand, null=True, on_delete=models.CASCADE)
+    car_model = models.ForeignKey(Brand, null=True, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
