@@ -9,6 +9,7 @@ __all__ = (
     'ChangePasswordSerializer',
     'ChangeAvatarSerializer',
     'AddEditCarSerializer',
+    'EditUserSerializer',
 )
 
 
@@ -52,3 +53,26 @@ class AddEditCarSerializer(serializers.ModelSerializer):
         model = users.models.Car
         fields = ('car_number', 'car_model', 'color', )
 
+
+class EditUserSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(max_length=181)
+
+    class Meta:
+        model = users.models.User
+        fields = ('full_name', 'email')
+
+    @staticmethod
+    def validate_full_name(value):
+        invalid_name_error_msg = _('Provided name is invalid.')
+        try:
+            first_name, last_name = (val.strip() for val in value.strip().split(' ', 1))
+        except ValueError:
+            raise serializers.ValidationError(invalid_name_error_msg)
+        return first_name, last_name
+
+    def update(self, instance, validated_data):
+        instance.first_name, instance.last_name = validated_data['full_name']
+        instance.email = validated_data['email']
+        instance.save()
+
+        return dict(full_name=validated_data['full_name'], email=validated_data['email'])

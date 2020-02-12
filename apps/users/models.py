@@ -96,3 +96,8 @@ class Car(models.Model):
     car_model = models.ForeignKey(Brand, null=True, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['car_number', 'user']),
+        ]

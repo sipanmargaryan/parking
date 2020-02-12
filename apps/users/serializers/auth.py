@@ -38,7 +38,7 @@ class AuthPayload(object):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'avatar': get_avatar(user.avatar),
-                'country': user.country.name,
+                # 'country': user.country.name,
             },
             'refresh_token': str(refresh),
             'access_token': str(refresh.access_token),

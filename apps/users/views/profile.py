@@ -12,6 +12,7 @@ __all__ = (
     'ChangeAvatarViewSet',
     'AddCarAPIView',
     'EditCarAPIView',
+    'EditUserAPIView',
 )
 
 
@@ -61,4 +62,10 @@ class AddCarAPIView(generics.CreateAPIView):
 class EditCarAPIView(generics.UpdateAPIView):
     queryset = users.models.Car.objects.all()
     serializer_class = AddEditCarSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+
+class EditUserAPIView(generics.UpdateAPIView):
+    queryset = users.models.User.objects.all()
+    serializer_class = EditUserSerializer
     permission_classes = (permissions.IsAuthenticated, )

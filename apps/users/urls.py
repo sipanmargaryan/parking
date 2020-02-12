@@ -23,6 +23,7 @@ profile_patterns = [
         ),
     path('add-car/', profile.AddCarAPIView.as_view(), name='add_car'),
     path('edit_car/<int:pk>/', profile.EditCarAPIView.as_view(), name='edit_car'),
+    path('edit_user/<int:pk>/', profile.EditUserAPIView.as_view(), name='edit_car'),
 ]
 
 app_name = 'users'
