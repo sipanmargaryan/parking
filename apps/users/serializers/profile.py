@@ -10,6 +10,7 @@ __all__ = (
     'ChangeAvatarSerializer',
     'AddEditCarSerializer',
     'EditUserSerializer',
+    'NotificationSerializer',
 )
 
 
@@ -76,3 +77,10 @@ class EditUserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return dict(full_name=validated_data['full_name'], email=validated_data['email'])
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = users.models.Notification
+        fields = ('notification_method', )
+

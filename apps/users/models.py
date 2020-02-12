@@ -83,10 +83,10 @@ class Notification(models.Model):
     METHODS = (
         (SMS, _('sms notification')),
         (APP, _('Application Notification')),
-        (BOTH, _('both types')),
+        (BOTH, _('Both Types')),
     )
 
-    currency = models.CharField(max_length=3, choices=METHODS, default=APP)
+    notification_method = models.CharField(max_length=3, choices=METHODS, default=APP)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 

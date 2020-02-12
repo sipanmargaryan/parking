@@ -13,6 +13,7 @@ __all__ = (
     'AddCarAPIView',
     'EditCarAPIView',
     'EditUserAPIView',
+    'ChangeNotificationViewSet',
 )
 
 
@@ -69,3 +70,12 @@ class EditUserAPIView(generics.UpdateAPIView):
     queryset = users.models.User.objects.all()
     serializer_class = EditUserSerializer
     permission_classes = (permissions.IsAuthenticated, )
+
+
+class ChangeNotificationViewSet(viewsets.ModelViewSet):
+    queryset = users.models.Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_object(self):
+        return self.queryset.filter(user=self.request.user).first()

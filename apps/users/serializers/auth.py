@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 
 from core.models import Country
-from users.models import User
+from users.models import User, Notification
 
 
 __all__ = (
@@ -112,7 +112,7 @@ class SignupSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-
+        Notification.objects.create(notification_method=Notification.APP, user=user)
         # users.utils.emails.send_email_address_confirmation(user)
 
         return {'msg': _('Please confirm your phone number.')}
