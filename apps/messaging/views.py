@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, mixins, permissions, status
 from rest_framework.response import Response
 
 from django.http import Http404
@@ -10,6 +10,7 @@ from .serializers import *  # noqa
 
 __all__ = (
     'SendMessageAPIView',
+    'ResolveEventAPIView',
 )
 
 
@@ -56,3 +57,26 @@ class SendMessageAPIView(generics.CreateAPIView):
             self.status_code = status.HTTP_400_BAD_REQUEST
 
         return Response(response, status=self.status_code)
+
+
+class ResolveEventAPIView(mixins.UpdateModelMixin, generics.GenericAPIView):
+    queryset = messaging.models.Event.objects.all()
+    serializer_class = ResolveEventSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self, event_id):
+        return self.queryset.filter(pk=event_id, users__pk=self.request.user.pk).first()
+
+    def patch(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        event = self.get_object(serializer.validated_data['event'])
+
+        if not event:
+            raise Http404
+
+        response = serializer.resolve_event(event=event)
+
+        return Response(response)

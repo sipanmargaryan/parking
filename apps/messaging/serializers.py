@@ -1,15 +1,21 @@
 from rest_framework import serializers
 
+from django.utils.translation import gettext as _
+
 import messaging.models
 from messaging.utils import Firebase
 
 __all__ = (
     'MessageSerializer',
+    'ResolveEventSerializer',
 )
 
 
-class MessageSerializer(serializers.ModelSerializer):
+# noinspection PyAbstractClass
+class MessageSerializer(serializers.Serializer):
     car_id = serializers.IntegerField()
+    message = serializers.CharField()
+    image = serializers.ImageField()
 
     class Meta:
         model = messaging.models.Message
@@ -38,3 +44,20 @@ class MessageSerializer(serializers.ModelSerializer):
         users = event.users.all()
         registration_ids = [users[0].device_id, users[1].device_id]
         Firebase().send_message(data, registration_ids, 1)
+
+
+class ResolveEventSerializer(serializers.ModelSerializer):
+    event = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = messaging.models.Event
+        fields = ('event', )
+
+    @staticmethod
+    def resolve_event(event):
+        event.resolved = True
+        event.save()
+
+        return {
+            'msg': _('Chat has been resolved.')
+        }

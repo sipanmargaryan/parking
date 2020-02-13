@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.urls import reverse
 
 from core.utils import get_file_path
 import users.models
@@ -31,16 +30,6 @@ class Event(models.Model):
 
     def __str__(self):
         return f'{self.car} - Chat'
-
-    def get_absolute_url(self):
-        return reverse('messaging:inbox_detail', kwargs={'pk': self.pk})
-
-    @property
-    def chat_url(self):
-        if not self.pk:
-            raise ValueError('pk is None')
-
-        return f'/chat/{self.pk}/'
 
 
 class Message(models.Model):
