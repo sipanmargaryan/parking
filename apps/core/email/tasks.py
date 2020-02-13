@@ -4,6 +4,7 @@ from celery import task
 
 from django.core.mail import EmailMessage
 
+
 __all__ = (
     'send_async_email',
 )
@@ -32,3 +33,4 @@ def send_async_email(
     email.content_subtype = 'html'
 
     email.send()
+

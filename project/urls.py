@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path(f'api/v{settings.API_VERSION}/accounts/', include('users.urls', namespace='users')),
+    path(f'api/v{settings.API_VERSION}/messaging/', include('messaging.urls', namespace='messaging')),
 ]
 
 if settings.ENABLE_DEBUG_TOOLBAR:

@@ -7,7 +7,8 @@ from django.utils.translation import gettext_lazy as _
 
 from core.models import Country
 from users.models import User, Notification
-
+from users.utils import random_with_n_digits
+from users.utils.tasks import send_async_phone_code
 
 __all__ = (
     'LoginSerializer',
@@ -61,7 +62,6 @@ class LoginSerializer(serializers.Serializer, AuthPayload):
     @staticmethod
     def get_user(phone_number: str, password: str) -> User:
         invalid_credentials = _('Invalid login credentials.')
-
         try:
             user = User.objects.get(phone_number=phone_number)
         except User.DoesNotExist:
@@ -102,18 +102,20 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         first_name, last_name = validated_data['full_name']
-
+        phone_code = random_with_n_digits(6)
         user = User(
             first_name=first_name,
             last_name=last_name,
-            country=Country.objects.get(name=settings.DEFAULT_COUNTRY),
+            phone_number_confirmation_token=phone_code,
+            # country=Country.objects.get(name=settings.DEFAULT_COUNTRY),
             phone_number=validated_data['phone_number'],
             is_active=False,
         )
         user.set_password(validated_data['password'])
         user.save()
         Notification.objects.create(notification_method=Notification.APP, user=user)
-        # users.utils.emails.send_email_address_confirmation(user)
+
+        send_async_phone_code.delay(phone_number=user.phone_number, code=user.phone_number_confirmation_token)
 
         return {'msg': _('Please confirm your phone number.')}
 

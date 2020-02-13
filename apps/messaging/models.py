@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
+from core.utils import get_file_path
 import users.models
 
 __all__ = (
@@ -21,7 +22,7 @@ class MessageTemplate(models.Model):
 class Event(models.Model):
 
     resolved = models.BooleanField(default=False)
-    event_message = models.TextField()
+    image = models.ImageField(upload_to=get_file_path, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

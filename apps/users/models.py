@@ -87,6 +87,7 @@ class Notification(models.Model):
     )
 
     notification_method = models.CharField(max_length=3, choices=METHODS, default=APP)
+    show_phone_number = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 

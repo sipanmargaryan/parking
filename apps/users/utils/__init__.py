@@ -1,2 +1,2 @@
 from .emails import *  # noqa
-from .social import *  # noqa
+from .routee import *  # noqa

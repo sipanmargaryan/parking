@@ -111,10 +111,6 @@ CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
 CELERY_TASK_ALWAYS_EAGER = ENV.bool('CELERY_TASK_ALWAYS_EAGER', False)
 
-CELERY_ROUTES = {
-    'accounts.tasks.AsyncEmailTask': {'queue': 'accounts'},
-}
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -197,3 +193,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_COUNTRY = ENV.str('DEFAULT_COUNTRY', 'Armenia')
+
+# Routee sms api setting
+
+ROUTEE_APPLICATION_ID = ENV.str('ROUTEE_APPLICATION_ID')
+ROUTEE_APPLICATION_SECRET = ENV.str('ROUTEE_APPLICATION_SECRET')

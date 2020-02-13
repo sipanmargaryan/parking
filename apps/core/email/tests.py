@@ -9,9 +9,9 @@ def test_send_email(mailoutbox, monkeypatch):
         subject='Test subject',
         template_name='blank.html',
         context={
-            'recipient_name': 'Davit',
+            'recipient_name': 'Test',
         },
-        to='davitovmasyan@gmail.com',
+        to='test@gmail.com',
     )
 
     assert len(mailoutbox) == 1
@@ -19,5 +19,5 @@ def test_send_email(mailoutbox, monkeypatch):
     email = mailoutbox[0]
 
     assert email.subject == 'Test subject'
-    assert email.to == ['davitovmasyan@gmail.com']
+    assert email.to == ['test@gmail.com']
     assert email.body == 'spam'
