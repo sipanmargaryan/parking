@@ -116,7 +116,6 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         Notification.objects.create(notification_method=Notification.APP, user=user)
-
         send_async_phone_code.delay(phone_number=user.phone_number, code=user.phone_number_confirmation_token)
 
         return {'msg': _('Please confirm your phone number.')}

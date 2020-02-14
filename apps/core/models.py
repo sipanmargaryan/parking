@@ -11,7 +11,8 @@ __all__ = (
 class Country(models.Model):
     name = models.CharField(max_length=256, unique=True)
     flag = models.CharField(max_length=256, unique=True)
-    country_code = models.CharField(max_length=256, unique=True)
+    country_code = models.CharField(max_length=8, unique=True)
+    country_phone_code = models.CharField(max_length=8, unique=True)
 
     class Meta:
         ordering = ['name']
