@@ -51,9 +51,10 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=16, unique=True)
     avatar = models.ImageField(upload_to=get_file_path, blank=True)
     device_id = models.CharField(max_length=200, editable=False, null=True)
-    phone_number_confirmation_token = models.CharField(max_length=64, editable=False, null=True)
-    reset_password_token = models.CharField(max_length=64, editable=False, null=True)
-    reset_password_request_date = models.DateTimeField(null=True)
+    phone_number_confirmation_token = models.CharField(max_length=12, editable=False, null=True)
+    phone_number_valid_date = models.DateTimeField(null=True)
+    reset_password_token = models.CharField(max_length=12, editable=False, null=True)
+    reset_password_valid_date = models.DateTimeField(null=True)
 
     country = models.ForeignKey(Country, null=True, on_delete=models.CASCADE)
 
@@ -64,8 +65,9 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'phone_number'
 
-    def generate_password_request_date(self):
-        self.reset_password_request_date = timezone.now()
+    @staticmethod
+    def generate_phone_number_valid_date():
+        return timezone.now() + timezone.timedelta(minutes=10)
 
     def get_avatar(self) -> str:
         if self.avatar:

@@ -10,6 +10,8 @@ from .serializers import *  # noqa
 
 __all__ = (
     'SendMessageAPIView',
+    'InboxAPIView',
+    'InboxDetailAPIView',
     'ResolveEventAPIView',
 )
 
@@ -24,7 +26,7 @@ class SendMessageAPIView(generics.CreateAPIView):
         car = (
             users.models.Car.objects
             .filter(pk=car_id)
-            .exclude(user=self.request.user)
+            .exclude(user=self.request.user, resolved=True)
             .select_related('user')
             .first()
         )
@@ -57,6 +59,36 @@ class SendMessageAPIView(generics.CreateAPIView):
             self.status_code = status.HTTP_400_BAD_REQUEST
 
         return Response(response, status=self.status_code)
+
+
+class InboxAPIView(generics.ListAPIView):
+    queryset = messaging.models.Message.objects.all()
+    serializer_class = InboxSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        events = messaging.models.Event.objects.filter(users=user)
+        return (messaging.models.Message.objects
+                .filter(event__pk__in=events)
+                .distinct('event')
+                .select_related('event__car')
+                .order_by('event', '-sent_at'))
+
+
+class InboxDetailAPIView(generics.ListAPIView):
+    queryset = messaging.models.Message.objects.all()
+    serializer_class = InboxDetailSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        event_id = self.kwargs.get('event')
+        return (
+            messaging.models.Message.objects
+            .filter(event=event_id, event__users__pk=self.request.user.pk)
+            .select_related('sender')
+            .order_by('-sent_at')
+        )
 
 
 class ResolveEventAPIView(mixins.UpdateModelMixin, generics.GenericAPIView):

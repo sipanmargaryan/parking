@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from core.models import Country
 from users.models import User, Notification
@@ -39,7 +40,7 @@ class AuthPayload(object):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'avatar': get_avatar(user.avatar),
-                # 'country': user.country.name,
+                'country': user.country and user.country.name or '',
             },
             'refresh_token': str(refresh),
             'access_token': str(refresh.access_token),
@@ -107,6 +108,7 @@ class SignupSerializer(serializers.ModelSerializer):
             first_name=first_name,
             last_name=last_name,
             phone_number_confirmation_token=phone_code,
+            phone_number_valid_date=User.generate_phone_number_valid_date(),
             # country=Country.objects.get(name=settings.DEFAULT_COUNTRY),
             phone_number=validated_data['phone_number'],
             is_active=False,
@@ -126,7 +128,7 @@ class ConfirmPhoneNumberSerializer(serializers.Serializer, AuthPayload):
 
     def validate_token(self, value):
         # noinspection PyAttributeOutsideInit
-        self.user = User.objects.filter(phone_confirmation_token=value).first()
+        self.user = User.objects.filter(phone_confirmation_token=value, phone_number_valid_date__gte=timezone.now()).first()
         if not self.user:
             raise serializers.ValidationError(_('Invalid token.'))
         return value
@@ -134,6 +136,7 @@ class ConfirmPhoneNumberSerializer(serializers.Serializer, AuthPayload):
     def create(self, validated_data):
         self.user.is_active = True
         self.user.phone_confirmation_token = None
+        self.user.phone_number_valid_date = None
         self.user.save()
 
         return self.get_auth_payload(
@@ -151,11 +154,11 @@ class ForgotPasswordSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = User.objects.filter(phone_number=validated_data['phone_number']).first()
         if user:
-            user.generate_password_request_date()
-            user.reset_password_token = User.generate_token()
+            user.reset_password_token = random_with_n_digits(6)
+            user.reset_password_valid_date = User.generate_phone_number_valid_date(),
             user.save()
 
-            # users.utils.emails.send_forgot_password_request(user)
+            send_async_phone_code.delay(phone_number=user.phone_number, code=user.phone_number_confirmation_token)
 
         return {'msg': _('Please check your phone number.')}
 
@@ -167,7 +170,8 @@ class ResetPasswordSerializer(serializers.Serializer, AuthPayload):
 
     def validate_token(self, value):
         # noinspection PyAttributeOutsideInit
-        self.user = User.objects.filter(reset_password_token=value).first()
+        self.user = User.objects.filter(reset_password_token=value,
+                                        reset_password_valid_date__gte=timezone.now()).first()
 
         if not self.user:
             raise serializers.ValidationError(_('Invalid Reset Password Code.'))
@@ -181,7 +185,7 @@ class ResetPasswordSerializer(serializers.Serializer, AuthPayload):
 
     def create(self, validated_data):
         self.user.reset_password_token = None
-        self.user.reset_password_request_date = None
+        self.user.reset_password_valid_date = None
         self.user.is_active = True
         self.user.set_password(validated_data['password'])
 

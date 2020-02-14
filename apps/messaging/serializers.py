@@ -1,12 +1,15 @@
 from rest_framework import serializers
 
 from django.utils.translation import gettext as _
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 import messaging.models
 from messaging.utils import Firebase
 
 __all__ = (
     'MessageSerializer',
+    'InboxSerializer',
+    'InboxDetailSerializer',
     'ResolveEventSerializer',
 )
 
@@ -44,6 +47,44 @@ class MessageSerializer(serializers.Serializer):
         users = event.users.all()
         registration_ids = [users[0].device_id, users[1].device_id]
         Firebase().send_message(data, registration_ids, 1)
+
+
+class InboxSerializer(serializers.ModelSerializer):
+    thread = serializers.SerializerMethodField()
+
+    class Meta:
+        model = messaging.models.Message
+        fields = (
+            'thread',
+        )
+
+    @staticmethod
+    def get_thread(message):
+        return {
+            'pk': message.event.pk,
+            'message': message.message,
+            'resolved': message.event.resolved,
+            'sent_at': naturaltime(message.sent_at),
+        }
+
+
+class InboxDetailSerializer(serializers.ModelSerializer):
+    sender = serializers.SerializerMethodField()
+    sender_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = messaging.models.Message
+        fields = (
+            'pk', 'message', 'sent_at', 'sender', 'sender_name'
+        )
+
+    @staticmethod
+    def get_sender(message):
+        return message.sender.pk
+
+    @staticmethod
+    def get_sender_name(message):
+        return message.sender.get_full_name()
 
 
 class ResolveEventSerializer(serializers.ModelSerializer):
