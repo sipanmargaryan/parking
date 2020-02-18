@@ -83,5 +83,4 @@ site-packages/
 dist-packages/
 .ipython/
 .bash_history
-media/
 collectstatic/
