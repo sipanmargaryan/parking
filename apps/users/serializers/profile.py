@@ -83,4 +83,3 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.Notification
         fields = ('notification_method', )
-

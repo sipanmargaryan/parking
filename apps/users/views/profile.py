@@ -1,8 +1,8 @@
-from rest_framework import generics, permissions, parsers, viewsets
+from rest_framework import generics, permissions, parsers, viewsets, views
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from django.http import Http404
 
+import core.models
 import users.models
 from ..serializers import *  # noqa
 
@@ -10,6 +10,7 @@ from ..serializers import *  # noqa
 __all__ = (
     'ChangePasswordAPIView',
     'ChangeAvatarViewSet',
+    'AddCarInfoAPIView',
     'AddCarAPIView',
     'EditCarAPIView',
     'EditUserAPIView',
@@ -49,6 +50,18 @@ class ChangeAvatarViewSet(viewsets.ModelViewSet):
 
     def get_object(self):
         return self.queryset.filter(pk=self.request.user.pk).first()
+
+
+class AddCarInfoAPIView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    # noinspection PyUnusedLocal
+    def get(self, request):
+        return Response({
+          'brands': core.models.Brand.as_choices(),
+          'models': core.models.CarModel.as_choices_with_makes(),
+          'colors': core.models.Color.as_choices(),
+        })
 
 
 class AddCarAPIView(generics.CreateAPIView):

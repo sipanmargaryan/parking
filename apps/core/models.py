@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 
 __all__ = (
     'Country',
@@ -10,9 +11,9 @@ __all__ = (
 
 class Country(models.Model):
     name = models.CharField(max_length=256, unique=True)
-    flag = models.CharField(max_length=256, unique=True)
+    flag = models.ImageField(upload_to='images/flags')
     country_code = models.CharField(max_length=8, unique=True)
-    country_phone_code = models.CharField(max_length=8, unique=True)
+    country_phone_code = models.CharField(max_length=8)
 
     class Meta:
         ordering = ['name']
@@ -51,6 +52,10 @@ class CarModel(models.Model):
     def as_choices(cls):
         return cls.objects.values_list('pk', 'name')
 
+    @classmethod
+    def as_choices_with_makes(cls):
+        return cls.objects.annotate(make_pk=F('make__pk')).values('pk', 'name', 'make_pk'),
+
 
 class Color(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -61,5 +66,5 @@ class Color(models.Model):
 
     @classmethod
     def as_choices(cls):
-        return cls.objects.values_list('pk', 'name')
+        return cls.objects.values_list('pk', 'name', 'color_code')
 
