@@ -130,7 +130,7 @@ class ConfirmPhoneNumberSerializer(serializers.Serializer, AuthPayload):
         self.user = User.objects.filter(phone_number_confirmation_token=value,
                                         phone_number_valid_date__gte=timezone.now()).first()
         if not self.user:
-            raise serializers.ValidationError(_('Invalid token.'))
+            raise serializers.ValidationError(_('Invalid Verification Code.'))
         return value
 
     def create(self, validated_data):
