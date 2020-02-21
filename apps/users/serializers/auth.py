@@ -127,7 +127,7 @@ class ConfirmPhoneNumberSerializer(serializers.Serializer, AuthPayload):
 
     def validate_token(self, value):
         # noinspection PyAttributeOutsideInit
-        self.user = User.objects.filter(phone_confirmation_token=value,
+        self.user = User.objects.filter(phone_number_confirmation_token=value,
                                         phone_number_valid_date__gte=timezone.now()).first()
         if not self.user:
             raise serializers.ValidationError(_('Invalid token.'))
@@ -135,7 +135,7 @@ class ConfirmPhoneNumberSerializer(serializers.Serializer, AuthPayload):
 
     def create(self, validated_data):
         self.user.is_active = True
-        self.user.phone_confirmation_token = None
+        self.user.phone_number_confirmation_token = None
         self.user.phone_number_valid_date = None
         self.user.save()
 
