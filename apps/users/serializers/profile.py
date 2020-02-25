@@ -11,6 +11,7 @@ __all__ = (
     'AddEditCarSerializer',
     'EditUserSerializer',
     'NotificationSerializer',
+    'CarSerializer',
 )
 
 
@@ -83,3 +84,27 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.Notification
         fields = ('notification_method', )
+
+
+class CarSerializer(serializers.ModelSerializer):
+    car = serializers.SerializerMethodField()
+
+    class Meta:
+        model = users.models.Car
+        fields = (
+            'car',
+        )
+
+    @staticmethod
+    def get_car(car):
+        return {
+            'pk': car.pk,
+            'car_number': car.car_number,
+            'car_pk': car.color.pk,
+            'color': car.color.name,
+            'color_code': car.color.color_code,
+            'model': car.car_model.name,
+            'model_pk': car.car_model.pk,
+            'make_pk': car.car_model.make.pk,
+            'make_name': car.car_model.make.name,
+        }

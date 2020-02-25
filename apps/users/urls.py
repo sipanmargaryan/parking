@@ -1,7 +1,7 @@
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path, include
 
-from .views import auth, profile
+from .views import auth, profile, car
 
 auth_patterns = [
     path('login/', auth.LogInAPIView.as_view(), name='login'),
@@ -33,6 +33,7 @@ profile_patterns = [
         }),
         name='notification'
     ),
+    path('user-cars/', car.CarAPIView.as_view(), name='user_car_list'),
 ]
 
 app_name = 'users'

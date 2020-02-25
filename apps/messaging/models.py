@@ -12,6 +12,7 @@ __all__ = (
 
 
 class MessageTemplate(models.Model):
+    language_code = models.CharField(max_length=5, default='am')
     message_text = models.TextField()
 
     class Meta:
