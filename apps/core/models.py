@@ -5,7 +5,6 @@ __all__ = (
     'Country',
     'Brand',
     'CarModel',
-    'Color',
 )
 
 
@@ -34,7 +33,7 @@ class Brand(models.Model):
 
     @classmethod
     def as_choices(cls):
-        return cls.objects.values_list('pk', 'name')
+        return cls.objects.values('pk', 'name')
 
 
 class CarModel(models.Model):
@@ -54,17 +53,6 @@ class CarModel(models.Model):
 
     @classmethod
     def as_choices_with_makes(cls):
-        return cls.objects.annotate(make_pk=F('make__pk')).values('pk', 'name', 'make_pk'),
+        return cls.objects.annotate(make_pk=F('make__pk')).values('pk', 'name', 'make_pk')
 
-
-class Color(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    color_code = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def as_choices(cls):
-        return cls.objects.values_list('pk', 'name', 'color_code')
 

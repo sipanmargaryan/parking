@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from core.models import Country, CarModel, Color
+from core.models import Country, CarModel
 from core.utils import get_file_path
 
 __all__ = (
@@ -97,7 +97,7 @@ class Car(models.Model):
     car_number = models.CharField(max_length=60, unique=True)
 
     car_model = models.ForeignKey(CarModel, null=True, on_delete=models.CASCADE)
-    color = models.ForeignKey(Color, null=True, on_delete=models.CASCADE)
+    color = models.CharField(max_length=15, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:

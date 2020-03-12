@@ -60,7 +60,6 @@ class AddCarInfoAPIView(views.APIView):
         return Response({
           'brands': core.models.Brand.as_choices(),
           'models': core.models.CarModel.as_choices_with_makes(),
-          'colors': core.models.Color.as_choices(),
         })
 
 

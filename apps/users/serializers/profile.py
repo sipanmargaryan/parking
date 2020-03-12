@@ -101,8 +101,6 @@ class CarSerializer(serializers.ModelSerializer):
             'pk': car.pk,
             'car_number': car.car_number,
             'car_pk': car.color.pk,
-            'color': car.color.name,
-            'color_code': car.color.color_code,
             'model': car.car_model.name,
             'model_pk': car.car_model.pk,
             'make_pk': car.car_model.make.pk,
