@@ -83,7 +83,7 @@ class EditUserSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.Notification
-        fields = ('notification_method', )
+        fields = ('notification_method', 'show_phone_number', )
 
 
 class CarSerializer(serializers.ModelSerializer):
