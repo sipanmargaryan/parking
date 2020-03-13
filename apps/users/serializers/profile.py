@@ -105,4 +105,5 @@ class CarSerializer(serializers.ModelSerializer):
             'model_pk': car.car_model.pk,
             'make_pk': car.car_model.make.pk,
             'make_name': car.car_model.make.name,
+            'created': car.created
         }
