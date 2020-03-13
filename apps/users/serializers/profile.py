@@ -100,7 +100,7 @@ class CarSerializer(serializers.ModelSerializer):
         return {
             'pk': car.pk,
             'car_number': car.car_number,
-            'car_pk': car.color.pk,
+            'color': car.color,
             'model': car.car_model.name,
             'model_pk': car.car_model.pk,
             'make_pk': car.car_model.make.pk,
