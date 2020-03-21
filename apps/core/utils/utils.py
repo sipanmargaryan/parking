@@ -1,11 +1,20 @@
 import uuid
 
 from django.utils.text import slugify
+from django.conf import settings
 
 __all__ = (
+    'build_client_absolute_url',
     'get_file_path',
     'RequiredAttrMeta',
 )
+
+
+def build_client_absolute_url(path: str) -> str:
+    domain = settings.CLIENT_DOMAIN
+    url_scheme = settings.URL_SCHEME
+
+    return f'{url_scheme}://{domain}{path}'
 
 
 def get_file_path(instance, filename: str) -> str:

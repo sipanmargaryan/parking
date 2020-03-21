@@ -5,6 +5,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+from core.utils import build_client_absolute_url
 from users.models import User, Notification
 from users.utils import random_with_n_digits
 from users.utils.tasks import send_async_phone_code
@@ -38,7 +39,7 @@ class AuthPayload(object):
                 'phone_number': user.phone_number,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'avatar': get_avatar(user.avatar),
+                'avatar': build_client_absolute_url(get_avatar(user.avatar)),
                 'country': user.country and user.country.name or '',
             },
             'refresh_token': str(refresh),

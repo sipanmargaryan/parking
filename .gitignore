@@ -84,3 +84,4 @@ dist-packages/
 .ipython/
 .bash_history
 collectstatic/
+media/images/users/
