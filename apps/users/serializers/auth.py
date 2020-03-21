@@ -35,6 +35,7 @@ class AuthPayload(object):
             'user': {
                 'pk': user.pk,
                 'email': user.email,
+                'phone_number': user.phone_number,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'avatar': get_avatar(user.avatar),
