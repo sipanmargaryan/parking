@@ -1,6 +1,4 @@
 import uuid
-import requests
-from typing import Optional
 
 from django.utils.text import slugify
 

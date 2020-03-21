@@ -34,6 +34,7 @@ profile_patterns = [
         name='notification'
     ),
     path('user-cars/', car.CarAPIView.as_view(), name='user_car_list'),
+    path('delete-car/<int:pk>', car.DeleteCarAPIView.as_view(), name='delete_car'),
 ]
 
 app_name = 'users'

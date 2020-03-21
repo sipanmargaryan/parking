@@ -1,12 +1,10 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
 
-from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
-from core.models import Country
 from users.models import User, Notification
 from users.utils import random_with_n_digits
 from users.utils.tasks import send_async_phone_code
