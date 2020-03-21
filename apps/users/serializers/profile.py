@@ -58,7 +58,7 @@ class AddEditCarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = users.models.Car
-        fields = ( 'pk', 'car_number', 'car_model', 'model', 'color',  'make_name',  'make_pk', )
+        fields = ('pk', 'car_number', 'car_model', 'model', 'color',  'make_name',  'make_pk', )
 
 
 class EditUserSerializer(serializers.ModelSerializer):
@@ -92,23 +92,13 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
-    car = serializers.SerializerMethodField()
+    pk = serializers.ReadOnlyField()
+    make_name = serializers.ReadOnlyField(source='car_model.make.name')
+    make_pk = serializers.ReadOnlyField(source='car_model.make.pk')
+    model = serializers.ReadOnlyField(source='car_model.name')
 
     class Meta:
         model = users.models.Car
         fields = (
-            'car',
+            'pk', 'car_number', 'color', 'model', 'car_model', 'make_pk', 'make_name', 'created'
         )
-
-    @staticmethod
-    def get_car(car):
-        return {
-            'pk': car.pk,
-            'car_number': car.car_number,
-            'color': car.color,
-            'model': car.car_model.name,
-            'model_pk': car.car_model.pk,
-            'make_pk': car.car_model.make.pk,
-            'make_name': car.car_model.make.name,
-            'created': car.created
-        }
