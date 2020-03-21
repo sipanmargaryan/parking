@@ -51,9 +51,14 @@ class ChangeAvatarSerializer(serializers.ModelSerializer):
 
 
 class AddEditCarSerializer(serializers.ModelSerializer):
+    make_name = serializers.ReadOnlyField(source='car_model.make.name')
+    make_pk = serializers.ReadOnlyField(source='car_model.make.pk')
+    model = serializers.ReadOnlyField(source='car_model.name')
+    pk = serializers.ReadOnlyField()
+
     class Meta:
         model = users.models.Car
-        fields = ('car_number', 'car_model', 'color', )
+        fields = ( 'pk', 'car_number', 'car_model', 'model', 'color',  'make_name',  'make_pk', )
 
 
 class EditUserSerializer(serializers.ModelSerializer):
