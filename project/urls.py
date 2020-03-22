@@ -13,7 +13,7 @@ urlpatterns = [
     path(f'api/v{settings.API_VERSION}/public/', include('core.urls', namespace='core')),
     path(f'api/v{settings.API_VERSION}/accounts/', include('users.urls', namespace='users')),
     path(f'api/v{settings.API_VERSION}/messaging/', include('messaging.urls', namespace='messaging')),
-] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.ENABLE_DEBUG_TOOLBAR:
     import debug_toolbar
