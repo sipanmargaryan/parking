@@ -77,6 +77,9 @@ class EditCarAPIView(generics.UpdateAPIView):
     serializer_class = AddEditCarSerializer
     permission_classes = (permissions.IsAuthenticated, )
 
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+
 
 class EditUserAPIView(generics.UpdateAPIView):
     queryset = users.models.User.objects.all()

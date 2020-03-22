@@ -106,3 +106,6 @@ class Car(models.Model):
         indexes = [
             models.Index(fields=['car_number', 'user']),
         ]
+
+    def __str__(self):
+        return self.car_number
