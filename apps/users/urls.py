@@ -23,7 +23,7 @@ profile_patterns = [
         ),
     path('add-car/', profile.AddCarAPIView.as_view(), name='add_car'),
     path('edit-car/<int:pk>/', profile.EditCarAPIView.as_view(), name='edit_car'),
-    path('edit-user/<int:pk>/', profile.EditUserAPIView.as_view(), name='edit_car'),
+    path('edit-user/', profile.EditUserAPIView.as_view(), name='edit_car'),
     path('add-car-info/', profile.AddCarInfoAPIView.as_view(), name='add_car_info'),
     path(
         'change-notification/',
