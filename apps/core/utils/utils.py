@@ -14,7 +14,7 @@ def build_client_absolute_url(path: str) -> str:
     domain = settings.CLIENT_DOMAIN
     url_scheme = settings.URL_SCHEME
 
-    return f'{url_scheme}://{domain}{path}'
+    return path and f'{url_scheme}://{domain}{path}' or ''
 
 
 def get_file_path(instance, filename: str) -> str:

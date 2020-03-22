@@ -4,8 +4,10 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.conf import settings
 
 from core.utils import build_client_absolute_url
+from core.models import Country
 from users.models import User, Notification
 from users.utils import random_with_n_digits
 from users.utils.tasks import send_async_phone_code
@@ -109,7 +111,7 @@ class SignupSerializer(serializers.ModelSerializer):
             last_name=last_name,
             phone_number_confirmation_token=phone_code,
             phone_number_valid_date=User.generate_phone_number_valid_date(),
-            # country=Country.objects.get(name=settings.DEFAULT_COUNTRY),
+            country=Country.objects.get(name=settings.DEFAULT_COUNTRY),
             phone_number=validated_data['phone_number'],
             is_active=False,
         )
