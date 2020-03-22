@@ -92,6 +92,9 @@ class Notification(models.Model):
     show_phone_number = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.user.phone_number
+
 
 class Car(models.Model):
     car_number = models.CharField(max_length=60, unique=True)

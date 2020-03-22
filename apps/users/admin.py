@@ -4,3 +4,4 @@ import users.models
 
 admin.site.register(users.models.User)
 admin.site.register(users.models.Car)
+admin.site.register(users.models.Notification)

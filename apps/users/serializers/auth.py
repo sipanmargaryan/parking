@@ -155,7 +155,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
         user = User.objects.filter(phone_number=validated_data['phone_number']).first()
         if user:
             user.reset_password_token = random_with_n_digits(6)
-            user.reset_password_valid_date = User.generate_phone_number_valid_date(),
+            user.reset_password_valid_date = User.generate_phone_number_valid_date()
             user.save()
 
             send_async_phone_code.delay(phone_number=user.phone_number, code=user.phone_number_confirmation_token)
