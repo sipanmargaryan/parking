@@ -2,8 +2,6 @@ from rest_framework import generics, permissions, parsers, viewsets, views
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from django.http import Http404
-
 import core.models
 import users.models
 from ..serializers import *  # noqa
@@ -86,10 +84,7 @@ class EditUserAPIView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def get_object(self):
-        try:
-            return self.queryset.get(pk=self.request.user.pk)
-        except users.models.User.DoesNotExist:
-            raise Http404
+        return self.queryset.get(pk=self.request.user.pk)
 
 
 class ChangeNotificationViewSet(viewsets.ModelViewSet):
