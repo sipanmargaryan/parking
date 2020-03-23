@@ -2,6 +2,8 @@ from rest_framework import generics, permissions
 from rest_framework import status
 from rest_framework.response import Response
 
+from django.db.models import F, Func, Value
+
 import users.models
 from users.utils import random_with_n_digits
 from ..serializers import CarSerializer
@@ -42,15 +44,17 @@ class CheckCarAPIView(generics.RetrieveAPIView):
     queryset = users.models.Car.objects.all()
     lookup_field = 'car_number'
 
-    def get_queryset(self):
-        return self.queryset.filter(deleted=False)
-
-    def retrieve(self, request, *args, **kwargs):
+    def get_object(self):
         response = dict(valid=True)
+        car_number = self.kwargs[self.lookup_field].replace(' ', '')
         try:
-            self.get_object()
-        except Exception as e:
+            self.queryset.annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))\
+                .get(car_number_s__icontains=car_number)
+        except users.models.Car.DoesNotExist:
             response['valid'] = False
 
-        return Response(response)
+        return response
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(self.get_object())
 

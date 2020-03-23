@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
+from django.db.models import F, Func, Value
 
 import users.models
 
@@ -59,6 +60,16 @@ class AddEditCarSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.Car
         fields = ('pk', 'car_number', 'car_model', 'model', 'color',  'make_name',  'make_pk', )
+
+    @staticmethod
+    def validate_car_number(value):
+        value = value.replace(' ', '')
+        car = (users.models.Car.objects
+               .annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))
+               .filter(car_number__icontains=value))
+        if car.exists():
+            raise serializers.ValidationError(_('A car with this number already exists.'))
+        return value
 
 
 class EditUserSerializer(serializers.ModelSerializer):
