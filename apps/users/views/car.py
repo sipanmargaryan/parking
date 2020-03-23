@@ -7,6 +7,13 @@ from users.utils import random_with_n_digits
 from ..serializers import CarSerializer
 
 
+__all__ = (
+    'CarAPIView',
+    'DeleteCarAPIView',
+    'CheckCarAPIView',
+)
+
+
 class CarAPIView(generics.ListAPIView):
     queryset = users.models.Car.objects.all()
     serializer_class = CarSerializer
@@ -29,3 +36,21 @@ class DeleteCarAPIView(generics.DestroyAPIView):
         instance.car_number = f'{instance.car_number}_{random_with_n_digits(6)}'
         instance.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CheckCarAPIView(generics.RetrieveAPIView):
+    queryset = users.models.Car.objects.all()
+    lookup_field = 'car_number'
+
+    def get_queryset(self):
+        return self.queryset.filter(deleted=False)
+
+    def retrieve(self, request, *args, **kwargs):
+        response = dict(valid=True)
+        try:
+            self.get_object()
+        except Exception as e:
+            response['valid'] = False
+
+        return Response(response)
+

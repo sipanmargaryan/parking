@@ -47,7 +47,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class ChangeAvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.User
-        fields = ('avatar',)
+        fields = ('avatar', )
 
 
 class AddEditCarSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class AddEditCarSerializer(serializers.ModelSerializer):
 class EditUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.User
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('first_name', 'last_name', 'email', )
 
 
 class NotificationSerializer(serializers.ModelSerializer):
@@ -82,5 +82,5 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = users.models.Car
         fields = (
-            'pk', 'car_number', 'color', 'model', 'car_model', 'make_pk', 'make_name', 'created'
+            'pk', 'car_number', 'color', 'model', 'car_model', 'make_pk', 'make_name', 'created',
         )
