@@ -42,6 +42,7 @@ class DeleteCarAPIView(generics.DestroyAPIView):
 
 class CheckCarAPIView(generics.RetrieveAPIView):
     queryset = users.models.Car.objects.all()
+    permission_classes = (permissions.IsAuthenticated, )
     lookup_field = 'car_number'
 
     def get_object(self):
