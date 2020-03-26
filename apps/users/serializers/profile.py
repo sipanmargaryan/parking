@@ -64,13 +64,13 @@ class AddEditCarSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def validate_car_number(value):
-        value = value.replace(' ', '')
+        upper_value = value.replace(' ', '').upper()
         car = (users.models.Car.objects
                .annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))
-               .filter(car_number__icontains=value))
+               .filter(car_number=upper_value))
         if car.exists():
             raise serializers.ValidationError(_('A car with this number already exists.'))
-        return value
+        return value.upper()
 
 
 class EditUserSerializer(serializers.ModelSerializer):

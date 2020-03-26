@@ -46,13 +46,16 @@ class CheckCarAPIView(generics.RetrieveAPIView):
     lookup_field = 'car_number'
 
     def get_object(self):
-        response = dict(valid=True)
-        car_number = self.kwargs[self.lookup_field].replace(' ', '')
-        try:
-            self.queryset.annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))\
-                .get(car_number_s__icontains=car_number)
-        except users.models.Car.DoesNotExist:
-            response['valid'] = False
+        response = dict(valid=False)
+        car_number = self.kwargs[self.lookup_field].replace(' ', '').upper()
+        car = self.queryset.annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))\
+            .filter(car_number_s=car_number).select_related('car_model__make', 'car_model').first()
+        if car:
+            response['valid'] = True
+            response['car_number'] = car.car_number
+            response['color'] = car.color
+            response['make_name'] = car.car_model.make.name
+            response['model_name'] = car.car_model.name
 
         return response
 
