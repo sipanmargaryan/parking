@@ -18,11 +18,10 @@ __all__ = (
 class MessageSerializer(serializers.Serializer):
     car_id = serializers.IntegerField()
     message = serializers.CharField()
-    image = serializers.ImageField()
+    image = serializers.ImageField(required=False)
 
     class Meta:
-        model = messaging.models.Message
-        fields = ('message', 'image', 'car_id')
+        fields = ('message', 'image', 'car_id', )
 
     @staticmethod
     def save_message(event, sender, message):

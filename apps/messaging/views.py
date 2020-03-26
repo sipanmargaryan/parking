@@ -26,7 +26,7 @@ class SendMessageAPIView(generics.CreateAPIView):
         car = (
             users.models.Car.objects
             .filter(pk=car_id)
-            .exclude(user=self.request.user, resolved=True)
+            .exclude(user=self.request.user, event__resolved=True)
             .select_related('user')
             .first()
         )
@@ -55,6 +55,7 @@ class SendMessageAPIView(generics.CreateAPIView):
             sender=self.request.user,
             message=serializer.validated_data['message']
         )
+        print(1222222222222222)
         if response:
             self.status_code = status.HTTP_400_BAD_REQUEST
 
