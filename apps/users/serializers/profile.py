@@ -13,6 +13,7 @@ __all__ = (
     'EditUserSerializer',
     'NotificationSerializer',
     'CarSerializer',
+    'ChangeDeviceSerializer',
 )
 
 
@@ -95,3 +96,16 @@ class CarSerializer(serializers.ModelSerializer):
         fields = (
             'pk', 'car_number', 'color', 'model', 'car_model', 'make_pk', 'make_name', 'created',
         )
+
+
+class ChangeDeviceSerializer(serializers.ModelSerializer):
+    device_id = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = users.models.User
+        fields = ('device_id', )
+
+    @staticmethod
+    def change_device(user, device):
+        user.device_id = device
+        user.save()

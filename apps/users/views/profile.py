@@ -15,6 +15,7 @@ __all__ = (
     'EditCarAPIView',
     'EditUserAPIView',
     'ChangeNotificationViewSet',
+    'ConnectDeviceAPIView',
 )
 
 
@@ -97,3 +98,19 @@ class ChangeNotificationViewSet(viewsets.ModelViewSet):
 
     def get_object(self):
         return self.queryset.filter(user=self.request.user).first()
+
+
+class ConnectDeviceAPIView(GenericAPIView):
+    queryset = users.models.User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ChangeDeviceSerializer
+
+    def patch(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        response = serializer.change_device(
+            user=self.request.user,
+            device=serializer.validated_data['device_id'],
+        )
+
+        return Response(response)
