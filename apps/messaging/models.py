@@ -22,7 +22,7 @@ class MessageTemplate(models.Model):
 class Event(models.Model):
 
     resolved = models.BooleanField(default=False)
-    image = models.ImageField(upload_to=get_file_path, blank=True)
+    image = models.ImageField(upload_to=get_file_path, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
