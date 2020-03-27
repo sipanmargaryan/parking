@@ -52,6 +52,7 @@ class CheckCarAPIView(generics.RetrieveAPIView):
             .filter(car_number_s=car_number).select_related('car_model__make', 'car_model').first()
         if car:
             response['valid'] = True
+            response['pk'] = car.pk
             response['car_number'] = car.car_number
             response['color'] = car.color
             response['make_name'] = car.car_model.make.name
