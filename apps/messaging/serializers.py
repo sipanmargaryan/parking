@@ -52,18 +52,21 @@ class InboxSerializer(serializers.ModelSerializer):
     pk = serializers.ReadOnlyField()
     message = serializers.ReadOnlyField()
     resolved = serializers.ReadOnlyField(source='event.resolved')
+    color = serializers.ReadOnlyField(source='event.car.color')
+    car_number = serializers.ReadOnlyField(source='event.car.car_number')
+    make_name = serializers.ReadOnlyField(source='event.car.car_model.make.name')
+    car_model = serializers.ReadOnlyField(source='event.car.car_model.name')
     sent_at = serializers.SerializerMethodField()
 
     class Meta:
         model = messaging.models.Message
         fields = (
-            'pk', 'message', 'resolved', 'sent_at'
+            'pk', 'message', 'resolved', 'color', 'car_number', 'make_name', 'car_model', 'sent_at',
         )
 
     @staticmethod
     def get_sent_at(message):
         return naturaltime(message.sent_at)
-
 
 
 class InboxDetailSerializer(serializers.ModelSerializer):
