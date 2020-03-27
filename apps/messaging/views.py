@@ -55,7 +55,6 @@ class SendMessageAPIView(generics.CreateAPIView):
             sender=self.request.user,
             message=serializer.validated_data['message']
         )
-        print(1222222222222222)
         if response:
             self.status_code = status.HTTP_400_BAD_REQUEST
 

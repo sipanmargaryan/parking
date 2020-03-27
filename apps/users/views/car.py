@@ -49,7 +49,7 @@ class CheckCarAPIView(generics.RetrieveAPIView):
         response = dict(valid=False)
         car_number = self.kwargs[self.lookup_field].replace(' ', '').upper()
         car = self.queryset.annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))\
-            .filter(car_number_s=car_number).select_related('car_model__make', 'car_model').first()
+            .filter(car_number_s=car_number).exclude(user=self.request.user).select_related('car_model__make', 'car_model').first()
         if car:
             response['valid'] = True
             response['pk'] = car.pk
