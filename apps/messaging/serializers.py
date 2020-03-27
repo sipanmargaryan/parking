@@ -49,22 +49,21 @@ class MessageSerializer(serializers.Serializer):
 
 
 class InboxSerializer(serializers.ModelSerializer):
-    thread = serializers.SerializerMethodField()
+    pk = serializers.ReadOnlyField()
+    message = serializers.ReadOnlyField()
+    resolved = serializers.ReadOnlyField(source='event.resolved')
+    sent_at = serializers.SerializerMethodField()
 
     class Meta:
         model = messaging.models.Message
         fields = (
-            'thread',
+            'pk', 'message', 'resolved', 'sent_at'
         )
 
     @staticmethod
-    def get_thread(message):
-        return {
-            'pk': message.event.pk,
-            'message': message.message,
-            'resolved': message.event.resolved,
-            'sent_at': naturaltime(message.sent_at),
-        }
+    def get_sent_at(message):
+        return naturaltime(message.sent_at)
+
 
 
 class InboxDetailSerializer(serializers.ModelSerializer):
