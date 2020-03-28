@@ -70,7 +70,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, message):
-        event = messaging.models.Event.objects.get(pk=self.event, blocked=False)
+        event = messaging.models.Event.objects.get(pk=self.event, resolved=False)
         return messaging.models.Message.objects.create(
             event=event,
             sender=self.user,
