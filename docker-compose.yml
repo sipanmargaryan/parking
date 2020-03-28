@@ -19,9 +19,14 @@ services:
 
   db:
     image: postgres:10
-    restart: always
     volumes:
       - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
 
   redis:
     image: redis:3.2
