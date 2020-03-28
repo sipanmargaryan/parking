@@ -79,12 +79,12 @@ class InboxAPIView(generics.ListAPIView):
 class InboxDetailAPIView(generics.ListAPIView):
     queryset = messaging.models.Message.objects.all()
     serializer_class = InboxDetailSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
         event_id = self.kwargs.get('event')
         return (
-            messaging.models.Message.objects
+            self.queryset
             .filter(event=event_id, event__users__pk=self.request.user.pk)
             .select_related('sender')
             .order_by('-sent_at')

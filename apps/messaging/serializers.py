@@ -50,6 +50,7 @@ class MessageSerializer(serializers.Serializer):
 
 class InboxSerializer(serializers.ModelSerializer):
     pk = serializers.ReadOnlyField()
+    event_pk = serializers.ReadOnlyField(source='event.pk')
     message = serializers.ReadOnlyField()
     resolved = serializers.ReadOnlyField(source='event.resolved')
     color = serializers.ReadOnlyField(source='event.car.color')
@@ -61,7 +62,7 @@ class InboxSerializer(serializers.ModelSerializer):
     class Meta:
         model = messaging.models.Message
         fields = (
-            'pk', 'message', 'resolved', 'color', 'car_number', 'make_name', 'car_model', 'sent_at',
+            'pk', 'event_pk', 'message', 'resolved', 'color', 'car_number', 'make_name', 'car_model', 'sent_at',
         )
 
     @staticmethod
