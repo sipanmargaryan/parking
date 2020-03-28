@@ -62,7 +62,9 @@ class InboxSerializer(serializers.ModelSerializer):
     class Meta:
         model = messaging.models.Message
         fields = (
-            'pk', 'event_pk', 'message', 'resolved', 'color', 'car_number', 'make_name', 'car_model', 'sent_at',
+            'pk', 'event_pk', 'message',
+            'resolved', 'color', 'car_number',
+            'make_name', 'car_model', 'sent_at',
         )
 
     @staticmethod
