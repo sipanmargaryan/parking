@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-29 16:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apps/messaging/serializers.py:107
+msgid "Chat has been resolved."
+msgstr ""
+
+#: apps/users/models.py:86
+msgid "sms notification"
+msgstr "sms notification"
+
+#: apps/users/models.py:87
+msgid "Application Notification"
+msgstr "Application Notification"
+
+#: apps/users/models.py:88
+msgid "Both Types"
+msgstr "Both Types"
+
+#: apps/users/serializers/auth.py:67
+msgid "Invalid login credentials."
+msgstr ""
+
+#: apps/users/serializers/auth.py:93
+msgid "Provided name is invalid."
+msgstr ""
+
+#: apps/users/serializers/auth.py:103
+msgid "A user with this phone_number already exists."
+msgstr ""
+
+#: apps/users/serializers/auth.py:123
+msgid "Please confirm your phone number."
+msgstr "Հատատեք ձեր հեռախոսահամարը"
+
+#: apps/users/serializers/auth.py:135
+msgid "Invalid Verification Code."
+msgstr ""
+
+#: apps/users/serializers/auth.py:147
+msgid "You have successfully confirmed you phone number."
+msgstr ""
+
+#: apps/users/serializers/auth.py:165
+msgid "Please check your phone number."
+msgstr "Հատատեք ձեր հեռախոսահամարը"
+
+#: apps/users/serializers/auth.py:179
+msgid "Invalid Reset Password Code."
+msgstr ""
+
+#: apps/users/serializers/profile.py:27
+msgid "Old password is required."
+msgstr ""
+
+#: apps/users/serializers/profile.py:30
+msgid "Invalid password."
+msgstr ""
+
+#: apps/users/serializers/profile.py:44
+msgid "Your password updated."
+msgstr ""
+
+#: apps/users/serializers/profile.py:72
+msgid "A car with this number already exists."
+msgstr "Մեքենան արդդեն գրանցվաց է"
+
+#: project/settings/local.py:144
+msgid "English"
+msgstr "English"
+
+#: project/settings/local.py:145
+msgid "Armenian"
+msgstr "Հայերեն"
