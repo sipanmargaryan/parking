@@ -47,7 +47,7 @@ msgstr ""
 
 #: apps/users/serializers/auth.py:123
 msgid "Please confirm your phone number."
-msgstr "Հատատեք ձեր հեռախոսահամարը"
+msgstr "Հաստատեք ձեր հեռախոսահամարը"
 
 #: apps/users/serializers/auth.py:135
 msgid "Invalid Verification Code."

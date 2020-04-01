@@ -35,13 +35,10 @@ class SendMessageAPIView(generics.CreateAPIView):
 
         return car
 
-    def get_or_create_event(self, car):
+    def create_event(self, car, image):
         user = self.request.user
-
-        event = messaging.models.Event.objects.filter(car=car, users=user).prefetch_related('users').first()
-        if not event:
-            event = messaging.models.Event.objects.create(car=car)
-            event.users.set([user, car.user])
+        event = messaging.models.Event.objects.create(car=car, image=image)
+        event.users.set([user, car.user])
 
         return event
 
@@ -49,7 +46,7 @@ class SendMessageAPIView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         car = self.get_object(serializer.validated_data['car_id'])
-        event = self.get_or_create_event(car)
+        event = self.create_event(car, serializer.validated_data['image'])
         response = serializer.save_message(
             event=event,
             sender=self.request.user,
