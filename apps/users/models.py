@@ -52,9 +52,9 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to=get_file_path, blank=True)
     device_id = models.CharField(max_length=200, editable=False, null=True)
     phone_number_confirmation_token = models.CharField(max_length=12, editable=False, null=True)
-    phone_number_valid_date = models.DateTimeField(null=True)
+    phone_number_valid_date = models.DateTimeField(null=True, blank=True)
     reset_password_token = models.CharField(max_length=12, editable=False, null=True)
-    reset_password_valid_date = models.DateTimeField(null=True)
+    reset_password_valid_date = models.DateTimeField(null=True, blank=True)
 
     country = models.ForeignKey(Country, null=True, on_delete=models.CASCADE)
 
