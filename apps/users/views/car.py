@@ -19,9 +19,10 @@ __all__ = (
 class CarAPIView(generics.ListAPIView):
     queryset = users.models.Car.objects.all()
     serializer_class = CarSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    # permission_classes = (permissions.IsAuthenticated, )
 
     def get_queryset(self):
+        print(self.request.headers)
         return self.queryset.filter(user=self.request.user, deleted=False).select_related('car_model__make', 'car_model')
 
 

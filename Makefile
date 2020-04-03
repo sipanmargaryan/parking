@@ -4,7 +4,7 @@ all:
 	docker-compose build
 
 run:
-	docker-compose up -d project
+	docker-compose up project
 
 shell:
 	docker-compose run --rm project /bin/bash
