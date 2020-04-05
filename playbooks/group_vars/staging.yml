@@ -1,0 +1,6 @@
+---
+server_name: "api.findyapp.dev"
+app_client_domain: "api.findyapp.dev"
+app_debug_toolbar: "True"
+app_basic_auth: "True"
+app_celery_eager: "False"

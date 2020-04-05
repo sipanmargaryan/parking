@@ -1,0 +1,5 @@
+---
+server_name: "findyapp.dev"
+app_client_domain: "findyapp.dev"
+app_debug_toolbar: "False"
+app_celery_eager: "True"

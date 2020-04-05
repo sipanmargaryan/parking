@@ -1,0 +1,5 @@
+[staging]
+68.183.148.186  ansible_user=project ansible_ssh_private_key_file=./first_playbook
+
+[prod]
+68.183.148.186  ansible_user=project ansible_ssh_private_key_file=./first_playbook

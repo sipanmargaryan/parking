@@ -1,0 +1,18 @@
+DEBUG={{ app_debug }}
+ALLOWED_HOSTS={{ app_allowed_hosts }}
+SECRET_KEY={{ app_secret_key }}
+INTERNAL_IPS=127.0.0.1
+
+ENABLE_DEBUG_TOOLBAR={{ app_debug_toolbar }}
+CELERY_TASK_ALWAYS_EAGER={{ app_celery_eager }}
+REDIS_HOST={{ app_redis_host }}
+
+CLIENT_DOMAIN={{ app_url_scheme }}
+URL_SCHEME={{ app_url_scheme }}
+
+DATABASE_URL={{ app_database_url }}
+
+ROUTEE_APPLICATION_ID={{ app_routee_application_id }}
+ROUTEE_APPLICATION_SECRET={{ app_routee_application_secret }}
+
+FCM_SERVER_KEY={{ fcm_server_key }}
