@@ -56,7 +56,7 @@
     - webserver
 
 - name: Create certificate
-  shell: certbot certonly --nginx --noninteractive --agree-tos --email dev@{{ server_name }} --domains {{ server_name }}
+  shell: certbot certonly --nginx --noninteractive --agree-tos --email dev@{{ server_name }} --cert-name {{ server_name }} --domains {{ server_name }},{{ app_www_server_name }}
   tags:
     - webserver
 

@@ -1,5 +1,6 @@
 ---
 server_name: "api.findyapp.dev"
+app_www_server_name: "www.api.findyapp.dev"
 app_client_domain: "api.findyapp.dev"
 app_debug_toolbar: "True"
 app_basic_auth: "True"
