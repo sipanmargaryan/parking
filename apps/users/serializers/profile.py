@@ -1,3 +1,5 @@
+import re
+
 from rest_framework import serializers
 
 from django.contrib.auth.password_validation import validate_password
@@ -65,6 +67,8 @@ class AddEditCarSerializer(serializers.ModelSerializer):
     @staticmethod
     def validate_car_number(value):
         upper_value = value.replace(' ', '').upper()
+        if not re.search("^[0-9]{2}[A-Z]{2}[0-9]{3}$", upper_value):
+            raise serializers.ValidationError(_('Invalid car number.'))
         car = (users.models.Car.objects
                .annotate(car_number_s=Func(F('car_number'), Value(' '), Value(''), function='REPLACE'))
                .filter(car_number=upper_value))
