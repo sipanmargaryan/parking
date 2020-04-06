@@ -33,16 +33,16 @@
 - name: disable root SSH logins
   replace:
     destfile: /etc/ssh/sshd_config
-    regexp: "^PermitRootLogin yes"
-    replace: "PermitRootLogin no"
+    regexp: "^PermitRootLogin no"
+    replace: "PermitRootLogin yes"
     backup: no
 
 
 - name: disable SSH logins by password
   replace:
     destfile: /etc/ssh/sshd_config
-    regexp: "^PasswordAuthentication yes"
-    replace: "PasswordAuthentication no"
+    regexp: "^PasswordAuthentication no"
+    replace: "PasswordAuthentication yes"
     backup: no
 
 - name: restart SSH service
