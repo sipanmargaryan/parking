@@ -34,6 +34,7 @@ EXTERNAL_APPS = [
     'rest_framework_swagger',
     'corsheaders',
     'channels',
+    'admin_honeypot',
 ]
 
 PROJECT_APPS = [

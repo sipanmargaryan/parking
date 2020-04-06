@@ -8,7 +8,8 @@ from django.conf.urls.static import static
 schema_view = get_swagger_view(title=f'{settings.CLIENT_DOMAIN} API')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('findy-staff/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path(f'api/v{settings.API_VERSION}/public/', include('core.urls', namespace='core')),
     path(f'api/v{settings.API_VERSION}/accounts/', include('users.urls', namespace='users')),
