@@ -70,7 +70,6 @@ class AddCarAPIView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def perform_create(self, serializer):
-        raise ValueError
         serializer.save(user=self.request.user)
 
 
