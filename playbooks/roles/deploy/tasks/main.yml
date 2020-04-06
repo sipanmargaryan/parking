@@ -11,15 +11,15 @@
 #  tags:
 #    - deploy
 #
-- name: Clone/Pull git repository
-  git:
-    repo: "{{ app_repo_remote }}"
-    dest: "{{ app_root_dir }}"
-    version: "{{ app_repo_branch }}"
-    accept_hostkey: yes
-    force: yes
-  tags:
-    - deploy
+#- name: Clone/Pull git repository
+#  git:
+#    repo: "{{ app_repo_remote }}"
+#    dest: "{{ app_root_dir }}"
+#    version: "{{ app_repo_branch }}"
+#    accept_hostkey: yes
+#    force: yes
+#  tags:
+#    - deploy
 
 #- name: Create directory for logs
 #  become: yes
@@ -43,22 +43,22 @@
 #  tags:
 #    - deploy
 
-- name: Install PIP dependencies
-  pip:
-    requirements: "{{ app_root_dir }}/requirements/requirements.txt"
-    virtualenv: "{{ app_venv_dir }}"
-    virtualenv_command: /usr/bin/python3.6 -m venv
-  args:
-    chdir: "{{ app_root_dir }}"
-  tags:
-    - deploy
+#- name: Install PIP dependencies
+#  pip:
+#    requirements: "{{ app_root_dir }}/requirements/requirements.txt"
+#    virtualenv: "{{ app_venv_dir }}"
+#    virtualenv_command: /usr/bin/python3.6 -m venv
+#  args:
+#    chdir: "{{ app_root_dir }}"
+#  tags:
+#    - deploy
 
-- name: Distribute Packages
-  command: "/usr/local/bin/pip3.6 install -e ."
-  args:
-    chdir: "{{ app_root_dir }}"
-  tags:
-    - deploy
+#- name: Distribute Packages
+#  command: "/usr/local/bin/pip3.6 install -e ."
+#  args:
+#    chdir: "{{ app_root_dir }}"
+#  tags:
+#    - deploy
 
 #- name: Add env file
 #  become: yes
@@ -86,15 +86,15 @@
 
 #- name: Fill in car data
 #  django_manage:
-#    command: shell -c "from project.management.commands import insert_car_models; cmd = insert_car_models.Command(); cmd.handle();"
+#    command: shell -c "from apps.core.management.commands import insert_car_models; cmd = insert_car_models.Command(); cmd.handle();"
 #    virtualenv: "{{ app_venv_dir }}"
 #    app_path: "{{ app_root_dir }}"
-#
-#- name: Fill in countries data
-#  django_manage:
-#    command: shell -c "from project.management.commands import insert_car_models; cmd = insert_car_models.Command(); cmd.handle();"
-#    virtualenv: "{{ app_venv_dir }}"
-#    app_path: "{{ app_root_dir }}"
+
+- name: Fill in countries data
+  django_manage:
+    command: shell -c "from apps.core.management.commands import insert_country_codes; cmd = insert_country_codes.Command(); cmd.handle();"
+    virtualenv: "{{ app_venv_dir }}"
+    app_path: "{{ app_root_dir }}"
 
 #- name: Collect static files
 #  command: "{{ app_venv_dir }}/bin/python manage.py collectstatic --no-input"
