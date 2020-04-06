@@ -1,16 +1,16 @@
 ---
 
-#- name: Create project directory
-#  become: yes
-#  file:
-#    path: "{{ app_root_dir }}"
-#    state: directory
-#    owner: www-data
-#    group: www-data
-#    recurse: true
-#  tags:
-#    - deploy
-#
+- name: Create project directory
+  become: yes
+  file:
+    path: "{{ app_root_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: true
+  tags:
+    - deploy
+
 - name: Clone/Pull git repository
   git:
     repo: "{{ app_repo_remote }}"
@@ -21,74 +21,74 @@
   tags:
     - deploy
 
-#- name: Create directory for logs
-#  become: yes
-#  file:
-#    path: "{{ app_log_dir }}"
-#    state: directory
-#    owner: www-data
-#    group: www-data
-#    recurse: true
-#  tags:
-#    - deploy
-#
-#- name: Create run directory
-#  become: yes
-#  file:
-#    path: "{{ app_run_dir }}"
-#    state: directory
-#    owner: www-data
-#    group: www-data
-#    recurse: true
-#  tags:
-#    - deploy
+- name: Create directory for logs
+  become: yes
+  file:
+    path: "{{ app_log_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: true
+  tags:
+    - deploy
 
-#- name: Install PIP dependencies
-#  pip:
-#    requirements: "{{ app_root_dir }}/requirements/requirements.txt"
-#    virtualenv: "{{ app_venv_dir }}"
-#    virtualenv_command: /usr/bin/python3.6 -m venv
-#  args:
-#    chdir: "{{ app_root_dir }}"
-#  tags:
-#    - deploy
+- name: Create run directory
+  become: yes
+  file:
+    path: "{{ app_run_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: true
+  tags:
+    - deploy
 
-#- name: Distribute Packages
-#  command: "/usr/local/bin/pip3.6 install -e ."
-#  args:
-#    chdir: "{{ app_root_dir }}"
-#  tags:
-#    - deploy
+- name: Install PIP dependencies
+  pip:
+    requirements: "{{ app_root_dir }}/requirements/requirements.txt"
+    virtualenv: "{{ app_venv_dir }}"
+    virtualenv_command: /usr/bin/python3.6 -m venv
+  args:
+    chdir: "{{ app_root_dir }}"
+  tags:
+    - deploy
 
-#- name: Add env file
-#  become: yes
-#  template:
-#    src: templates/env
-#    dest: "{{ app_root_dir }}/.env"
-#  tags:
-#    - deploy
+- name: Distribute Packages
+  command: "/usr/local/bin/pip3.6 install -e ."
+  args:
+    chdir: "{{ app_root_dir }}"
+  tags:
+    - deploy
 
-#- name: Execute migrations
-#  command: "{{ app_venv_dir }}/bin/python manage.py migrate"
-#  register: db_migrations_result
-#  changed_when: "db_migrations_result.stdout is not search('No migrations to apply')"
-#  args:
-#    chdir: "{{ app_root_dir }}"
-#  tags:
-#    - deploy
-#    - migration
-#
-#- name: Create an initial superuser
-#  django_manage:
-#    command: shell -c "from django.contrib.auth import get_user_model; MyUser = get_user_model(); MyUser.objects.filter(phone_number__exact='{{ app_admin_phone_number }}').count() == 0 or exit(); new_super_user = MyUser( phone_number='{{ app_admin_phone_number }}',  is_superuser=True, is_staff=True ); new_super_user.set_password('{{ app_admin_password }}'); new_super_user.save();"
-#    virtualenv: "{{ app_venv_dir }}"
-#    app_path: "{{ app_root_dir }}"
+- name: Add env file
+  become: yes
+  template:
+    src: templates/env
+    dest: "{{ app_root_dir }}/.env"
+  tags:
+    - deploy
 
-#- name: Fill in car data
-#  django_manage:
-#    command: shell -c "from apps.core.management.commands import insert_car_models; cmd = insert_car_models.Command(); cmd.handle();"
-#    virtualenv: "{{ app_venv_dir }}"
-#    app_path: "{{ app_root_dir }}"
+- name: Execute migrations
+  command: "{{ app_venv_dir }}/bin/python manage.py migrate"
+  register: db_migrations_result
+  changed_when: "db_migrations_result.stdout is not search('No migrations to apply')"
+  args:
+    chdir: "{{ app_root_dir }}"
+  tags:
+    - deploy
+    - migration
+
+- name: Create an initial superuser
+  django_manage:
+    command: shell -c "from django.contrib.auth import get_user_model; MyUser = get_user_model(); MyUser.objects.filter(phone_number__exact='{{ app_admin_phone_number }}').count() == 0 or exit(); new_super_user = MyUser( phone_number='{{ app_admin_phone_number }}',  is_superuser=True, is_staff=True ); new_super_user.set_password('{{ app_admin_password }}'); new_super_user.save();"
+    virtualenv: "{{ app_venv_dir }}"
+    app_path: "{{ app_root_dir }}"
+
+- name: Fill in car data
+  django_manage:
+    command: shell -c "from apps.core.management.commands import insert_car_models; cmd = insert_car_models.Command(); cmd.handle();"
+    virtualenv: "{{ app_venv_dir }}"
+    app_path: "{{ app_root_dir }}"
 
 - name: Fill in countries data
   django_manage:
@@ -96,11 +96,11 @@
     virtualenv: "{{ app_venv_dir }}"
     app_path: "{{ app_root_dir }}"
 
-#- name: Collect static files
-#  command: "{{ app_venv_dir }}/bin/python manage.py collectstatic --no-input"
-#  register: collectstatic_result
-#  changed_when: "collectstatic_result.stdout is not search('0 static files copied')"
-#  args:
-#    chdir: "{{ app_root_dir }}"
-#  tags:
-#    - deploy
+- name: Collect static files
+  command: "{{ app_venv_dir }}/bin/python manage.py collectstatic --no-input"
+  register: collectstatic_result
+  changed_when: "collectstatic_result.stdout is not search('0 static files copied')"
+  args:
+    chdir: "{{ app_root_dir }}"
+  tags:
+    - deploy

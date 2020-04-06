@@ -11,31 +11,31 @@
 
   pre_tasks:
 
-#  - name: Update APT cache
-#    become: yes
-#    apt:
-#      update_cache: true
-#      cache_valid_time: 3600
-#      force_apt_get: true
-#
-#  - name: Upgrade installed packages
-#    become: yes
-#    apt:
-#      upgrade: safe
-#      force_apt_get: true
-#
-#  - name: Install system packages
-#    become: yes
-#    apt:
-#      name: ["software-properties-common", "git", "vim", "curl"]
+  - name: Update APT cache
+    become: yes
+    apt:
+      update_cache: true
+      cache_valid_time: 3600
+      force_apt_get: true
+
+  - name: Upgrade installed packages
+    become: yes
+    apt:
+      upgrade: safe
+      force_apt_get: true
+
+  - name: Install system packages
+    become: yes
+    apt:
+      name: ["software-properties-common", "git", "vim", "curl"]
 
   roles:
-#  - python
-#  - security
-#  - database
-#  - redis
+  - python
+  - security
+  - database
+  - redis
   - deploy
-#  - uwsgi
-#  - socket
-#  - celery
-#  - nginx
+  - uwsgi
+  - socket
+  - celery
+  - nginx
