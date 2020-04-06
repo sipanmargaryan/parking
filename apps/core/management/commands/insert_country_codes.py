@@ -13,7 +13,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with open(os.path.join(settings.BASE_DIR, 'json_data/countries_data.json'), 'rb') as f:
             countries = json.loads(f.read())
-        Country.objects.all().delete()
         for country in countries:
             make, _ = Country.objects.get_or_create(
                 name=country['country_en'],
