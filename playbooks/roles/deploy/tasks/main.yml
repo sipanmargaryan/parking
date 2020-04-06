@@ -54,7 +54,7 @@
     - deploy
 
 - name: Distribute Packages
-  command: "/usr/local/bin/pip3 install -e ."
+  command: "/usr/local/bin/pip3.6 install -e ."
   args:
     chdir: "{{ app_root_dir }}"
   tags:
@@ -84,21 +84,12 @@
     virtualenv: "{{ app_venv_dir }}"
     app_path: "{{ app_root_dir }}"
 
-- name: Fill in car data
-  command: "{{ app_venv_dir }}/bin/python manage.py insert_car_models"
-  args:
-    chdir: "{{ app_root_dir }}"
-  tags:
-    - deploy
-
-
-- name: Fill in car data
-  django_manage:
-    command: shell "{{ app_venv_dir }}/bin/python manage.py insert_car_models"
-    virtualenv: "{{ app_venv_dir }}"
-    app_path: "{{ app_root_dir }}"
-  tags:
-    - deploy
+#- name: Fill in car data
+#  command: "{{ app_venv_dir }}/bin/python manage.py insert_car_models"
+#  args:
+#    chdir: "{{ app_root_dir }}"
+#  tags:
+#    - deploy
 
 - name: Collect static files
   command: "{{ app_venv_dir }}/bin/python manage.py collectstatic --no-input"

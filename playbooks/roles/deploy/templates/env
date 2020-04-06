@@ -7,7 +7,7 @@ ENABLE_DEBUG_TOOLBAR={{ app_debug_toolbar }}
 CELERY_TASK_ALWAYS_EAGER={{ app_celery_eager }}
 REDIS_HOST={{ app_redis_host }}
 
-CLIENT_DOMAIN={{ app_url_scheme }}
+CLIENT_DOMAIN={{ app_client_domain }}
 URL_SCHEME={{ app_url_scheme }}
 
 DATABASE_URL={{ app_database_url }}
