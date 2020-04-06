@@ -11,15 +11,15 @@
 #  tags:
 #    - deploy
 #
-#- name: Clone/Pull git repository
-#  git:
-#    repo: "{{ app_repo_remote }}"
-#    dest: "{{ app_root_dir }}"
-#    version: "{{ app_repo_branch }}"
-#    accept_hostkey: yes
-#    force: yes
-#  tags:
-#    - deploy
+- name: Clone/Pull git repository
+  git:
+    repo: "{{ app_repo_remote }}"
+    dest: "{{ app_root_dir }}"
+    version: "{{ app_repo_branch }}"
+    accept_hostkey: yes
+    force: yes
+  tags:
+    - deploy
 
 #- name: Create directory for logs
 #  become: yes
