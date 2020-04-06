@@ -54,7 +54,7 @@
     - deploy
 
 - name: Distribute Packages
-  command: "/usr/local/bin/pip3.6 install -e ."
+  command: "{{ app_venv_dir }}/bin/python setup.py install"
   args:
     chdir: "{{ app_root_dir }}"
   tags:
