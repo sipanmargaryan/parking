@@ -56,7 +56,7 @@ class User(AbstractUser):
     reset_password_token = models.CharField(max_length=12, editable=False, null=True)
     reset_password_valid_date = models.DateTimeField(null=True, blank=True)
 
-    country = models.ForeignKey(Country, null=True, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, null=True, on_delete=models.PROTECT)
 
     username = None
 
