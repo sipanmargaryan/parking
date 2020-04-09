@@ -31,7 +31,7 @@ INSTALLED_APPS = [
 EXTERNAL_APPS = [
     'django_celery_results',
     'rest_framework',
-    'rest_framework_swagger',
+    'drf_yasg',
     'corsheaders',
     'channels',
     'admin_honeypot',
