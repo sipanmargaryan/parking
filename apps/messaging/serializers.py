@@ -28,7 +28,7 @@ class MessageSerializer(serializers.Serializer):
 
         if event.resolved:
             return {
-                'msg': 'Chat is blocked.'
+                'msg': _('Chat is blocked.')
             }
 
         messaging.models.Message.objects.create(

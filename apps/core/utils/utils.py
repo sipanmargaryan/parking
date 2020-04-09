@@ -1,5 +1,9 @@
 import uuid
 
+from rest_framework import status
+from rest_framework.exceptions import APIException
+
+from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.conf import settings
 
@@ -7,6 +11,7 @@ __all__ = (
     'build_client_absolute_url',
     'get_file_path',
     'RequiredAttrMeta',
+    'FoundException',
 )
 
 
@@ -39,3 +44,13 @@ class RequiredAttrMeta(type):
         for attr in cls._required_attributes:
             if not hasattr(cls, attr):
                 raise AttributeError(f'Attribute {attr} not present in {name}')
+
+
+class FoundException(APIException):
+    status_code = status.HTTP_302_FOUND
+    default_detail = _('Please confirm your phone number.')
+
+    def __init__(self, default_detail=None, detail=None, code=None):
+        if default_detail:
+            self.default_detail = default_detail
+        super(FoundException, self).__init__(detail, code)

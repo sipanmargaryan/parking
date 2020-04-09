@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
 
-from core.utils import build_client_absolute_url
+from core.utils import build_client_absolute_url, FoundException
 from core.models import Country
 from users.models import User, Notification
 from users.utils import random_with_n_digits
@@ -78,10 +78,11 @@ class LoginSerializer(serializers.Serializer, AuthPayload):
 
 class SignupSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(max_length=181)
+    phone_number = serializers.IntegerField()
 
     class Meta:
         model = User
-        fields = ('password', 'full_name', 'phone_number', )
+        fields = ('phone_number', 'password', 'full_name', )
 
     @staticmethod
     def validate_password(value):
@@ -97,11 +98,21 @@ class SignupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(invalid_name_error_msg)
         return first_name, last_name
 
-    @staticmethod
-    def validate_phone_number(value):
-        if User.objects.filter(email=value).exists():
+    def validate_phone_number(self, value):
+        user = User.objects.filter(phone_number=value).first()
+        if user:
+            if not user.is_active:
+                user.phone_number_confirmation_token = random_with_n_digits(6)
+                user.phone_number_valid_date = User.generate_phone_number_valid_date()
+                user.save()
+                self.__class__.send_confirmation_code(user)
+                raise FoundException()
             raise serializers.ValidationError(_('A user with this phone_number already exists.'))
         return value
+
+    @staticmethod
+    def send_confirmation_code(user):
+        send_async_phone_code.delay(phone_number=user.phone_number, code=user.phone_number_confirmation_token)
 
     def create(self, validated_data):
         first_name, last_name = validated_data['full_name']
@@ -118,7 +129,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         Notification.objects.create(notification_method=Notification.APP, user=user)
-        send_async_phone_code.delay(phone_number=user.phone_number, code=user.phone_number_confirmation_token)
+        self.__class__.send_confirmation_code(user)
 
         return {'msg': _('Please confirm your phone number.')}
 
