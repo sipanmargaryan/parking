@@ -71,7 +71,7 @@ class InboxAPIView(generics.ListAPIView):
                 .filter(event__pk__in=events)
                 .distinct('event')
                 .select_related('event__car')
-                .order_by('-sent_at', '-event__pk'))
+                .order_by('-event', '-sent_at'))
 
 
 class InboxDetailAPIView(generics.ListAPIView):
