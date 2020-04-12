@@ -2,7 +2,6 @@ from rest_framework import generics, mixins, permissions, status
 from rest_framework.response import Response
 
 from django.http import Http404
-from django.db.models import Subquery
 
 import users.models
 import messaging.models
@@ -67,11 +66,12 @@ class InboxAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        events = messaging.models.Event.objects.filter(users=user).distinct('pk').values('pk')
+        events = messaging.models.Event.objects.filter(users=user)
         return (messaging.models.Message.objects
-                .filter(event__pk__in=Subquery(events))
+                .filter(event__pk__in=events)
+                .distinct('event')
                 .select_related('event__car')
-                .order_by('-sent_at', '-event__pk'))
+                .order_by('-event', '-sent_at'))
 
 
 class InboxDetailAPIView(generics.ListAPIView):
