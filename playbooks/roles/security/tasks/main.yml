@@ -30,12 +30,12 @@
     validate: visudo -cf %s
 
 
-#- name: disable root SSH logins
-#  replace:
-#    destfile: /etc/ssh/sshd_config
-#    regexp: "^PermitRootLogin yes"
-#    replace: "PermitRootLogin no"
-#    backup: no
+- name: disable root SSH logins
+  replace:
+    destfile: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin yes"
+    replace: "PermitRootLogin no"
+    backup: no
 
 
 - name: disable SSH logins by password

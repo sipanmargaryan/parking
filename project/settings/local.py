@@ -17,6 +17,7 @@ ALLOWED_HOSTS = ENV.list('ALLOWED_HOSTS', [])
 INTERNAL_IPS = ENV.list('INTERNAL_IPS', default=('127.0.0.1', ))
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -181,6 +182,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+# APPEND_SLASH = False
 # JWT settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=3),
