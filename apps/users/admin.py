@@ -38,7 +38,7 @@ class CustomUserAdmin(UserAdmin):
                        'last_name', 'country', 'is_staff', 'is_superuser', 'is_active'),
         }),
     )
-    list_display = ('phone_number', 'email', 'first_name', 'last_name', 'is_staff')
+    list_display = ('phone_number', 'email', 'first_name', 'last_name', 'is_staff', 'device_id')
 
 
 admin.site.register(users.models.User, CustomUserAdmin)
