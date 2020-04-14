@@ -69,9 +69,9 @@ class InboxAPIView(generics.ListAPIView):
         events = messaging.models.Event.objects.filter(users=user)
         return (messaging.models.Message.objects
                 .filter(event__pk__in=events)
-                .distinct('event')
+                .distinct('sent_at', 'event')
                 .select_related('event__car')
-                .order_by('-event', '-sent_at'))
+                .order_by('-sent_at', '-event'))
 
 
 class InboxDetailAPIView(generics.ListAPIView):
